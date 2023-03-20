@@ -17,7 +17,7 @@ allprojects {
 }
 
 subprojects {
-    group 'com.bilgeadam'
+    group 'com.erinc'
     version 'v.0.0.1'
     sourceCompatibility=JavaVersion.VERSION_17
     targetCompatibility=JavaVersion.VERSION_17
@@ -47,6 +47,10 @@ allprojects {
         implementation libs.springBootValidation
         implementation libs.springOpenFeign
         implementation libs.javaJwt
+        implementation libs.springCloudSleuthZipkin
+        implementation libs.springCloudSleuth
+        implementation libs.springBootDataRedis
+
     }
 
 }

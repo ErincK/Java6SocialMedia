@@ -13,6 +13,6 @@ spring:
     show-sql: true
 
 jwt:
-  secretkey: ${java6secretkey}
-  audience: ${java6audience}
-  issuer: ${java6issuer}
+  secretkey: ${JAVA_SECRETKEY}
+  audience: ${JAVA6_AUDIENCE}
+  issuer: ${JAVA6_ISSUER}
