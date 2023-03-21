@@ -39,6 +39,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(dto));
     }
 
+    @PostMapping(REGISTER+"2")
+    public ResponseEntity<RegisterResponseDto> registerWithRabbitMq(@RequestBody @Valid RegisterRequestDto dto){
+        return ResponseEntity.ok(authService.registerWithRabbitMq(dto));
+    }
+
     @PostMapping(LOGIN)
     public ResponseEntity<String> login(@RequestBody LoginRequestDto dto){
             return  ResponseEntity.ok(authService.login(dto));
@@ -118,4 +123,9 @@ public class AuthController {
         }
     }
 
+
+    @GetMapping(FINDBYROLE)
+    public ResponseEntity<List<Long>> findByRole(@RequestParam String role){
+        return ResponseEntity.ok(authService.findByRole(role));
+    }
 }

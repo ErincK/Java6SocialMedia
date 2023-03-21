@@ -14,4 +14,5 @@ public class ApiUrls {
     public static final String ACTIVATESTATUS="/activatestatus";
 
     public static final String ACTIVATESTATUS2="/activatestatus/{authId}";
+    public static final String FINDBYROLE="/findbyrole";
 }

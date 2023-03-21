@@ -7,6 +7,7 @@ import com.erinc.exception.ErrorType;
 import com.erinc.exception.UserManagerException;
 import com.erinc.manager.IAuthManager;
 import com.erinc.mapper.IUserMapper;
+import com.erinc.rabbitmq.model.RegisterModel;
 import com.erinc.repository.IUserProfileRepository;
 import com.erinc.repository.entity.UserProfile;
 import com.erinc.repository.enums.EStatus;
@@ -14,9 +15,12 @@ import com.erinc.utility.JwtTokenManager;
 import com.erinc.utility.ServiceManager;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserProfileService extends ServiceManager<UserProfile,Long> {
@@ -42,6 +46,15 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
             throw  new UserManagerException(ErrorType.USER_NOT_CREATED);
         }
 
+    }
+
+    public Boolean createUserWithRabbitMq(RegisterModel model) {
+        try {
+            save(IUserMapper.INSTANCE.toUserProfile(model));
+            return true;
+        }catch (Exception e){
+            throw new UserManagerException(ErrorType.USER_NOT_CREATED);
+        }
     }
 
     public Boolean activateStatus(Long authId) {
@@ -92,7 +105,7 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         return  true;
     }
 
-    @Cacheable(value = "findByUsername",key ="#username.toLowerCase()")
+    @Cacheable(value = "findbyusername",key ="#username.toLowerCase()")
     public UserProfile findByUsername(String username){
         Optional<UserProfile> userProfile=userProfileRepository.findOptionalByUsernameIgnoreCase(username);
         if(userProfile.isEmpty())
@@ -100,5 +113,20 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         return userProfile.get();
     }
 
+    @Cacheable(value = "findbyrole",key ="#role.toUpperCase()")
+    public List<UserProfile> findByRole(String role){
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Long> authIds = authManager.findByRole(role).getBody();
+
+        return authIds.stream().map(x->userProfileRepository.findOptionalByAuthId(x)
+                .orElseThrow(()->{throw new UserManagerException(ErrorType.USER_NOT_FOUND);})).collect(Collectors.toList());
+
+    }
 
 }

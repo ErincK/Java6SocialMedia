@@ -5,7 +5,6 @@ import com.erinc.dto.request.UserProfileUpdateRequestDto;
 import com.erinc.repository.entity.UserProfile;
 import com.erinc.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 /*
@@ -51,5 +50,11 @@ public class UserProfileController {
     public ResponseEntity<UserProfile> findByUsername(@RequestParam String username){
         return ResponseEntity.ok(userProfileService.findByUsername(username));
     }
+
+   @GetMapping(FINDBYROLE)
+    public ResponseEntity<List<UserProfile>> findByRole(@RequestParam String role){
+        return ResponseEntity.ok(userProfileService.findByRole(role));
+   }
+
 
 }
