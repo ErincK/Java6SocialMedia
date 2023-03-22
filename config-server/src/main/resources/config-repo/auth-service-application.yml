@@ -32,3 +32,5 @@ rabbitmq:
   exchange-auth: auth-exchange
   registerkey: register-key
   queueRegister: register-queue
+  registermailkey: mail-key
+  registermailqueue: mail-queue

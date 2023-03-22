@@ -3,6 +3,7 @@ package com.erinc.mapper;
 import com.erinc.dto.request.NewCreateUserRequestDto;
 import com.erinc.dto.request.RegisterRequestDto;
 import com.erinc.dto.response.RegisterResponseDto;
+import com.erinc.rabbitmq.model.RegisterMailModel;
 import com.erinc.rabbitmq.model.RegisterModel;
 import com.erinc.repository.entity.Auth;
 import org.mapstruct.Mapper;
@@ -22,5 +23,7 @@ public interface IAuthMapper {
 
     @Mapping(source = "id",target = "authId")
     RegisterModel toRegisterModel(final Auth auth);
+
+    RegisterMailModel toRegisterMailModel(final Auth auth);
 
 }

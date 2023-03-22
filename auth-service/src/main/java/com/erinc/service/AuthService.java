@@ -9,6 +9,7 @@ import com.erinc.exception.AuthManagerException;
 import com.erinc.exception.ErrorType;
 import com.erinc.manager.IUserManager;
 import com.erinc.mapper.IAuthMapper;
+import com.erinc.rabbitmq.producer.RegisterMailProducer;
 import com.erinc.rabbitmq.producer.RegisterProducer;
 import com.erinc.repository.IAuthRepository;
 import com.erinc.repository.entity.Auth;
@@ -31,14 +32,16 @@ public class AuthService extends ServiceManager<Auth,Long> {
 
     private final IAuthRepository authRepository;
     private final RegisterProducer registerProducer;
+    private final RegisterMailProducer registerMailProducer;
     private final IUserManager userManager;
     private final CacheManager cacheManager;
     private final JwtTokenManager jwtTokenManager;
 
-    public AuthService(IAuthRepository authRepository, RegisterProducer registerProducer, IUserManager userManager, CacheManager cacheManager, JwtTokenManager jwtTokenManager) {
+    public AuthService(IAuthRepository authRepository, RegisterProducer registerProducer, RegisterMailProducer registerMailProducer, IUserManager userManager, CacheManager cacheManager, JwtTokenManager jwtTokenManager) {
         super(authRepository);
         this.authRepository = authRepository;
         this.registerProducer = registerProducer;
+        this.registerMailProducer = registerMailProducer;
         this.userManager = userManager;
         this.cacheManager = cacheManager;
         this.jwtTokenManager = jwtTokenManager;
@@ -72,6 +75,7 @@ public class AuthService extends ServiceManager<Auth,Long> {
             save(auth);
             //Rabbit MQ ile haberleşme sağlanacak..
             registerProducer.sendNewUser(IAuthMapper.INSTANCE.toRegisterModel(auth));
+            registerMailProducer.sendActivationCode(IAuthMapper.INSTANCE.toRegisterMailModel(auth));
             cacheManager.getCache("findbyrole").evict(auth.getRole().toString().toUpperCase());
         }catch (Exception e){
 
