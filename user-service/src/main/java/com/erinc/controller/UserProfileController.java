@@ -3,7 +3,7 @@ package com.erinc.controller;
 import com.erinc.dto.request.NewCreateUserRequestDto;
 import com.erinc.dto.request.UserProfileUpdateRequestDto;
 import com.erinc.repository.entity.UserProfile;
-import com.erinc.service.UserProfileService;
+import com.erinc.repository.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

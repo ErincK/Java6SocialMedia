@@ -1,8 +1,7 @@
 package com.erinc.rabbitmq.consumer;
 
-import com.erinc.mapper.IUserMapper;
 import com.erinc.rabbitmq.model.RegisterModel;
-import com.erinc.service.UserProfileService;
+import com.erinc.repository.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

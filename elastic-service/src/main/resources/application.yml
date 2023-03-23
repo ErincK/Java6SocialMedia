@@ -1,0 +1,11 @@
+server:
+  port: 7079
+
+spring:
+  elasticsearch:
+    uris: http://localhost:9200
+  zipkin:
+    enable: true
+    base-url: http://localhost:9411
+    service:
+      name: elastic-service

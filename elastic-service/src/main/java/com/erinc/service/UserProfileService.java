@@ -7,6 +7,7 @@ import com.erinc.utility.ServiceManager;
 import org.springframework.stereotype.Service;
 
 
+
 @Service
 public class UserProfileService extends ServiceManager<UserProfile,String> {
 
